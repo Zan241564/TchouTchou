@@ -457,7 +457,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _train: {fileID: 1790185592}
   _biome: {fileID: 1002153221}
-  _trainVisualSpeed: 3
+  _trainVisualSpeed: 30
+  _testBiomeZScrollLimit: -50
 --- !u!4 &853999863
 Transform:
   m_ObjectHideFlags: 0
