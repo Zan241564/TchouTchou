@@ -25,9 +25,19 @@ public class RessourceManager : MonoBehaviour
     int _moraleBiomeBonus;
     int _daysBiomeBonus;
 
+    int _currentBiomeID;
+
+    //Cette matrice indique les bonus de rssource et malus de jour pour chaque action dans chaque biome. 
+    //Chaque paire de valeurs correspond à la apire (bonus ressource, malus jours) d'une action.
+    //Les actions sont listées dans l'ordre de biome et, dans chaque biome, dans l'ordre food, water, morale
+    int[,] _biomeBonusMatrix = {{1, 2}, {1, 2}, {1, 2}, //biome 0
+                                {1,2},{1,2},{1,2},      // biome 1
+                                {1,2},{1,2},{1,2},};    //biome 2
+
     // Start is called before the first frame update
     void Start()
     {
+        // Début de partie
          _foodGauge = 70;
          _waterGauge = 70;
          _moraleGauge = 70;
@@ -38,11 +48,8 @@ public class RessourceManager : MonoBehaviour
         UpdateDisplay(_moraleDisplay, _moraleGauge);
         UpdateDisplay(_daysDisplay, _daysGauge);
 
-        _foodBiomeBonus = 1;
-         _waterBiomeBonus = 1;
-         _moraleBiomeBonus = 1;
-         _daysBiomeBonus = 1;
-
+        // Récupération info biome
+        UpdateBiome();
 
     }
 
@@ -50,6 +57,15 @@ public class RessourceManager : MonoBehaviour
     void UpdateDisplay(TMP_Text _display, int _valueGauge)
     {
         _display.text = _valueGauge.ToString();
+    }
+
+    void UpdateBiome(){
+        _currentBiomeID = this.GetComponent<GameManager>().GetBiomeID();
+
+        _foodBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 0, 0];
+        _waterBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 1, 0];
+        _moraleBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 2, 0];
+
     }
 
     public void AddFood() {
