@@ -521,6 +521,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 175612971}
   m_CullTransparentMesh: 1
+--- !u!1 &214040073 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8795261715559656407, guid: 81e31fa82260a5d48a58cb18b2dc57a6,
+    type: 3}
+  m_PrefabInstance: {fileID: 1836343627}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &323988208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6713387672053479420, guid: 7a51feb78f8259b4f80187fa74f1652f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2125592223}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,6 +1325,7 @@ GameObject:
   - component: {fileID: 853999863}
   - component: {fileID: 853999862}
   - component: {fileID: 853999864}
+  - component: {fileID: 853999865}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1327,7 +1340,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853999861}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 690eaee9c86af0140b30460b22dae41a, type: 3}
   m_Name: 
@@ -1338,6 +1351,7 @@ MonoBehaviour:
   _groundSpeedFactor: 0
   _trainVisualSpeedMemo: 30
   _trainAccelerationFactor: 5
+  _trainStop: 0
   _testBiomeZScrollLimit: -50
   _fadeToBlack: {fileID: 0}
   _fadeToBlackSpeed: 0
@@ -1378,10 +1392,30 @@ MonoBehaviour:
   - {fileID: 2017482104}
   - {fileID: 2017482103}
   - {fileID: 2017482102}
+  _canvasActions: {fileID: 1969769167}
+  _boutonsActions:
+  - {fileID: 323988208}
+  - {fileID: 1813090239}
+  - {fileID: 1686706103}
+  _canvasDestinations: {fileID: 214040073}
   _boutonsProchainArret:
   - {fileID: 1836343630}
   - {fileID: 1836343629}
   - {fileID: 1836343628}
+--- !u!114 &853999865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 853999861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b752a3056ac6a04b9ad91ab8e3c2a74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _trainStop: 0
+  biomeID: 0
 --- !u!1 &873366887
 GameObject:
   m_ObjectHideFlags: 0
@@ -2484,6 +2518,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661638367}
   m_CullTransparentMesh: 1
+--- !u!1 &1686706103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6001376928105895526, guid: 7a51feb78f8259b4f80187fa74f1652f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2125592223}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1755364989
 GameObject:
   m_ObjectHideFlags: 0
@@ -3040,6 +3080,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1790569318}
   m_CullTransparentMesh: 1
+--- !u!1 &1813090239 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5269089960553209010, guid: 7a51feb78f8259b4f80187fa74f1652f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2125592223}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1836343627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3310,6 +3356,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3626888533763583837, guid: 81e31fa82260a5d48a58cb18b2dc57a6,
     type: 3}
   m_PrefabInstance: {fileID: 1836343627}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1969769167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 784329208506086279, guid: 7a51feb78f8259b4f80187fa74f1652f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2125592223}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2017482101
 PrefabInstance:
@@ -4073,6 +4125,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrainManagementCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 784329208506086279, guid: 7a51feb78f8259b4f80187fa74f1652f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 966361367718881717, guid: 7a51feb78f8259b4f80187fa74f1652f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -4196,7 +4253,7 @@ PrefabInstance:
     - target: {fileID: 3209793791090020271, guid: 7a51feb78f8259b4f80187fa74f1652f,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4097740568438985629, guid: 7a51feb78f8259b4f80187fa74f1652f,
         type: 3}
@@ -4206,7 +4263,7 @@ PrefabInstance:
     - target: {fileID: 4097740568438985629, guid: 7a51feb78f8259b4f80187fa74f1652f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4097740568438985629, guid: 7a51feb78f8259b4f80187fa74f1652f,
         type: 3}
@@ -4221,7 +4278,7 @@ PrefabInstance:
     - target: {fileID: 4097740568438985629, guid: 7a51feb78f8259b4f80187fa74f1652f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ActionOnRessource
+      value: ClickOnLeave
       objectReference: {fileID: 0}
     - target: {fileID: 4097740568438985629, guid: 7a51feb78f8259b4f80187fa74f1652f,
         type: 3}
