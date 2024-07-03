@@ -65,7 +65,6 @@ public class RessourceManager : MonoBehaviour
         _foodBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 0, 0];
         _waterBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 1, 0];
         _moraleBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 2, 0];
-
     }
 
     public void AddFood() {
