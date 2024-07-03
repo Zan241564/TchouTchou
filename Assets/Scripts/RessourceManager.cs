@@ -35,11 +35,32 @@ public class RessourceManager : MonoBehaviour
                                 {1,-2},{1,-2},{1,-2},      // biome 1
                                 {1,-2},{1,-2},{1,-2},};    //biome 2
 
+    //Cette matrice indique, pour chaque biome, combien le joueur perd de chaque ressource en y entrant
+    // L'ordre des ressources est food, water, morale
+    int[,] _biomeMalusMatrix = { { 1,2,3},//biome 0
+                                {2,3,4 },//biome 1
+                                {3,4,5 }};//biome 2
+
+    //Cette matrice donne les informations pour le parcours du train. 
+    // La première dimension indique le niveau
+    //La deuxième dimension indique le node dans ce niveau
+    // La troisième dimension indique, pour chaque porchain node, le nb de jours bonus si on y va.
+    // si la valeur est nulle, c'est que le trajet est impossible
+
+    int[,,] _matriceParcours = {{{ 0,1,2}, { 1, 2, 3 }, { 0, 0, 2 } },
+                                {{ 0,1,2}, { 1, 2, 3 }, { 0, 0, 2 } },
+                                {{ 0,1,2}, { 1, 2, 3 }, { 0, 0, 2 } },
+                                {{ 0,1,2}, { 1, 2, 3 }, { 0, 0, 2 } },
+                                {{ 0,1,2}, { 1, 2, 3 }, { 0, 0, 2 } }};
+
+
     // Start is called before the first frame update
     void Start()
     {
+        _gameManager = this.GetComponent<GameManager>();
+
         // Début de partie
-         _foodGauge = 70;
+        _foodGauge = 70;
          _waterGauge = 70;
          _moraleGauge = 70;
          _daysGauge = 10;
@@ -50,7 +71,6 @@ public class RessourceManager : MonoBehaviour
         UpdateDisplay(_daysDisplay, _daysGauge);
 
         // Récupération info biome
-        _gameManager = this.GetComponent<GameManager>();
         UpdateBiome();
 
     }
