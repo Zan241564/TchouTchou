@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float _trainVisualSpeedMemo;
     float _trainVisualSpeed; // multiply the the scrolling speed of the background to create an illusion of speed for the train
     [SerializeField] float _trainAccelerationFactor; // also used for deceleration
-    bool _trainStop = false;
+    public bool _trainStop = false;
     [SerializeField] float _testBiomeZScrollLimit;
     [SerializeField] UnityEngine.UIElements.Button _startStop;
     [SerializeField] UnityEngine.UI.Image _fadeToBlack;

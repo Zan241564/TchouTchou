@@ -18,12 +18,12 @@ public class RessourceManager : MonoBehaviour
 
     GameManager _gameManager;
     bool _trainRunning;
-    int _boutonParcoursCliqué;
+    int _boutonParcoursChoisi;
 
     string[] _nomBiomes = { "Forest", "Desert", "Moutains" };
 
     //Cette matrice indique les bonus de rssource et malus de jour pour chaque action dans chaque biome. 
-    //Chaque paire de valeurs correspond à la apire (bonus ressource, malus jours) d'une action.
+    //Chaque paire de valeurs correspond à la paire (bonus ressource, malus jours) d'une action.
     //Les actions sont listées dans l'ordre de biome et, dans chaque biome, dans l'ordre food, water, morale
     int[,] _biomeBonusMatrix = {{1, -1}, {1, -2}, {1,-3}, //biome 0
                                 {1,-2},{1,-2},{1,-2},      // biome 1
@@ -77,13 +77,9 @@ public class RessourceManager : MonoBehaviour
 
     private void Update()
     {
-        /*
-         * if (_trainRunning){
-         * if (! _gameManager.getvalue _trainrunnning) { LeTrainArrive(); }
-         * }
-         * 
-         * 
-         */
+         if (_trainRunning){
+            if ( _gameManager._trainStop) { LeTrainArrive(); }
+         }
     }
 
     void UpdateDisplay(TMP_Text _display, int _valueGauge)
@@ -93,10 +89,6 @@ public class RessourceManager : MonoBehaviour
 
     void UpdateBiome(){
         _currentBiomeID = _gameManager.GetBiomeID();
-        /*
-        _foodBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 0, 0];
-        _waterBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 1, 0];
-        _moraleBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 2, 0];*/
     }
 
      void AddRessource(int _ressourceType, int _ressourceValue) {
@@ -120,6 +112,9 @@ public class RessourceManager : MonoBehaviour
         return _biomeBonusMatrix[_currentBiomeID * 3 + _actionID, 1];
     }
 
+    /// <summary>
+    /// Met à jours les 3 boutons de prochain arret 
+    /// </summary>
      void UpdateBoutonsProchainArret()
     {
 
@@ -144,16 +139,19 @@ public class RessourceManager : MonoBehaviour
 
     public void LeTrainPart(int _boutonIndex)
     {
-        _boutonParcoursCliqué = _boutonIndex;
+        _boutonParcoursChoisi = _boutonIndex;
         _trainRunning  = true;
         
-        //gameManager._nextBiomeID = _matriceCrspdcBoutonParcours[_boutonIndex, 0];
+        _gameManager.SetNextBiomeID( _matriceCrspdcBoutonParcours[_boutonIndex, 0]);
     }
 
+    /// <summary>
+    /// fonction d'volution des paramètres quand le train s'arrete dans el nouveau biome
+    /// </summary>
     void LeTrainArrive()
     {
         _trainRunning = false;
-        AddRessource(3,_matriceCrspdcBoutonParcours[_boutonParcoursCliqué, 1]);
+        AddRessource(3,_matriceCrspdcBoutonParcours[_boutonParcoursChoisi, 1]);
         _currentBiomeID = _gameManager.GetBiomeID();
         UpdateBoutonsProchainArret();
 
@@ -161,9 +159,15 @@ public class RessourceManager : MonoBehaviour
         _niveauParcours++;
     }
 
+    /// <summary>
+    /// Fonction pour l'effet sur ressourcs du changement de biome
+    /// </summary>
     void ConsommationInterBiome()
     {
-
+        for(int i = 0; i< 3; i++)
+        {
+            AddRessource(i, _biomeMalusMatrix[_currentBiomeID,i]);
+        }
     }
 
     void GameOver()

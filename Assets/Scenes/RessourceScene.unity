@@ -207,12 +207,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 853999864}
         m_TargetAssemblyTypeName: RessourceManager, Assembly-CSharp
-        m_MethodName: AddWater
-        m_Mode: 1
+        m_MethodName: ActionOnRessource
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -340,12 +340,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 853999864}
         m_TargetAssemblyTypeName: RessourceManager, Assembly-CSharp
-        m_MethodName: AddMorale
-        m_Mode: 1
+        m_MethodName: LeTrainPart
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -473,12 +473,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 853999864}
         m_TargetAssemblyTypeName: RessourceManager, Assembly-CSharp
-        m_MethodName: AddMorale
-        m_Mode: 1
+        m_MethodName: ActionOnRessource
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -937,8 +937,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 853999864}
         m_TargetAssemblyTypeName: RessourceManager, Assembly-CSharp
-        m_MethodName: AddFood
-        m_Mode: 1
+        m_MethodName: LeTrainPart
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1333,10 +1333,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _train: {fileID: 1790185592}
-  _biome: {fileID: 1002153221}
+  _biome: {fileID: 0}
+  _ground: {fileID: 0}
+  _groundSpeedFactor: 0
   _trainVisualSpeedMemo: 30
   _trainAccelerationFactor: 5
+  _trainStop: 0
   _testBiomeZScrollLimit: -50
+  _fadeToBlack: {fileID: 0}
+  _fadeToBlackSpeed: 0
+  _nextBiome: {fileID: 0}
+  _nextBiomeGround: {fileID: 0}
+  _clouds: {fileID: 0}
+  _cloudsSpeedFactor: 0
+  _biomeData: {fileID: 0}
 --- !u!4 &853999863
 Transform:
   m_ObjectHideFlags: 0
@@ -1643,18 +1653,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906763551}
   m_CullTransparentMesh: 1
---- !u!114 &1002153221 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3921602159821370335, guid: aea742d9173a5dd40991a420abdd6d13,
-    type: 3}
-  m_PrefabInstance: {fileID: 5210856119200033049}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5eeb11069d14bf4583847712a2340a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1130899493
 GameObject:
   m_ObjectHideFlags: 0
@@ -2487,12 +2485,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 853999864}
         m_TargetAssemblyTypeName: RessourceManager, Assembly-CSharp
-        m_MethodName: AddWater
-        m_Mode: 1
+        m_MethodName: LeTrainPart
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2872,8 +2870,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 853999864}
         m_TargetAssemblyTypeName: RessourceManager, Assembly-CSharp
-        m_MethodName: AddFood
-        m_Mode: 1
+        m_MethodName: ActionOnRessource
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
