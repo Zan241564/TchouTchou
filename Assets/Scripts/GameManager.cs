@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Material _nextBiomeGround;
     int _nextBiomeID = 1;
+    [SerializeField]
+    GameObject _clouds;
+    GameObject _cloudsDupe;
+    [SerializeField]
+    float _cloudsSpeedFactor;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +48,9 @@ public class GameManager : MonoBehaviour
         _biomeDupe.transform.Rotate(90.0f, 0.0f, -90.0f);
         _trainVisualSpeed = _trainVisualSpeedMemo;
         _currentBiomeID = 0;
+        Vector3 cloudsDupePos = _clouds.gameObject.transform.position + new Vector3(0.0f, 0.0f, 50.0f);
+        _cloudsDupe = Instantiate(_clouds, cloudsDupePos, Quaternion.identity);
+        _cloudsDupe.gameObject.transform.Rotate(0.0f, 0.0f, -90.0f);
     }
 
     // Update is called once per frame
@@ -50,7 +58,9 @@ public class GameManager : MonoBehaviour
     {
         _biome.transform.position += new Vector3(0.0f, 0.0f, -1.0f) * Time.deltaTime * _trainVisualSpeed;
         _biomeDupe.transform.position += new Vector3(0.0f, 0.0f, -1.0f) * Time.deltaTime * _trainVisualSpeed;
-        if(_biome.transform.position.z < _testBiomeZScrollLimit)
+        _clouds.transform.position += new Vector3(0.0f, 0.0f, -1.0f) * Time.deltaTime * _trainVisualSpeed * _cloudsSpeedFactor;
+        _cloudsDupe.transform.position += new Vector3(0.0f, 0.0f, -1.0f) * Time.deltaTime * _trainVisualSpeed * _cloudsSpeedFactor;
+        if (_biome.transform.position.z < _testBiomeZScrollLimit)
         {
             _biome.transform.position = _biomeDupe.transform.position + new Vector3(0.0f, 0.0f, 50.0f);
         }
@@ -58,8 +68,18 @@ public class GameManager : MonoBehaviour
         {
             _biomeDupe.transform.position = _biome.transform.position + new Vector3(0.0f, 0.0f, 50.0f);
         }
+        if(_clouds.transform.position.z < _testBiomeZScrollLimit)
+        {
+            Debug.Log("_clouds respawn");
+            _clouds.transform.position = _cloudsDupe.transform.position + new Vector3(0.0f, 0.0f, 50.0f);
+        }
+        if (_cloudsDupe.transform.position.z < _testBiomeZScrollLimit)
+        {
+            Debug.Log("_cloudsDupe respawn");
+            _cloudsDupe.transform.position = _clouds.transform.position + new Vector3(0.0f, 0.0f, 50.0f);
+        }
 
-        if(_trainStop)
+        if (_trainStop)
         {
             _trainVisualSpeed -= 1.0f * Time.deltaTime * _trainAccelerationFactor;
             if(_trainVisualSpeed < 0.0f)
@@ -108,7 +128,6 @@ public class GameManager : MonoBehaviour
     public void StartStop()
     {
         _trainStop = !_trainStop;
-        Debug.Log("button start/stop");
     }
 
     public void ChangeBiome()
@@ -121,5 +140,18 @@ public class GameManager : MonoBehaviour
     public int GetBiomeID()
     {
         return _currentBiomeID;
+    }
+
+    // This is called automatically after a while when a new biome is loaded to stop the train and start the "management part" of the gameplay loop
+    public void StopTrain()
+    {
+        _trainStop = true;
+        // do things
+    }
+
+    // This is called when the player chooses the next biome to go. It calls all the "narrative part" of the gameplay loop
+    public void StartTrain()
+    {
+        // do things
     }
 }
