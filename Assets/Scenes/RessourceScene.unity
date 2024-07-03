@@ -1364,10 +1364,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f92cf7f3ee6fafa45adb880fe009ad6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _foodDisplay: {fileID: 906763553}
-  _waterDisplay: {fileID: 777401701}
-  _moraleDisplay: {fileID: 1130899495}
-  _daysDisplay: {fileID: 2046572491}
+  _ressourceDisplays:
+  - {fileID: 906763553}
+  - {fileID: 777401701}
+  - {fileID: 1130899495}
+  - {fileID: 2046572491}
   _boutonsProchainArret:
   - {fileID: 675720023}
   - {fileID: 1765595240}
