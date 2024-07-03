@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RessourceManager : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class RessourceManager : MonoBehaviour
     TMP_Text _moraleDisplay;
     [SerializeField]
     TMP_Text _daysDisplay;
+
+    [SerializeField]
+    GameObject[] _boutonsProchainArret;
 
     int _foodGauge;
     int _waterGauge;
@@ -27,6 +31,8 @@ public class RessourceManager : MonoBehaviour
     GameManager _gameManager;
 
     int _currentBiomeID;
+
+    string[] _nomBiomes = { "Forest", "Desert", "Moutains" };
 
     //Cette matrice indique les bonus de rssource et malus de jour pour chaque action dans chaque biome. 
     //Chaque paire de valeurs correspond à la apire (bonus ressource, malus jours) d'une action.
@@ -73,9 +79,10 @@ public class RessourceManager : MonoBehaviour
         // Récupération info biome
         UpdateBiome();
 
+        UpdateBoutonsProchainArret();
+
     }
 
-    // Update is called once per frame
     void UpdateDisplay(TMP_Text _display, int _valueGauge)
     {
         _display.text = _valueGauge.ToString();
@@ -133,6 +140,23 @@ public class RessourceManager : MonoBehaviour
 
         UpdateDisplay(_daysDisplay, _daysGauge);
     }
+
+     void UpdateBoutonsProchainArret()
+    {
+        int _nbBoutons = 0;
+        for(int i=0; i<3; i++)
+        {
+            int _joursAProchainNoeud = _matriceParcours[1, 1, i];
+            string _nomProchainNoeud = _nomBiomes[i];
+            if(_joursAProchainNoeud != 0) {
+                _boutonsProchainArret[_nbBoutons].gameObject.SetActive(true);
+                _boutonsProchainArret[_nbBoutons].GetComponentInChildren<TMP_Text>().text = _nomProchainNoeud + " " + _joursAProchainNoeud;
+                _nbBoutons++;
+            }
+            
+        }
+    }
+
     void GameOver()
     {
         Debug.Log("Game Over");
