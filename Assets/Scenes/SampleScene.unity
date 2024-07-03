@@ -676,6 +676,7 @@ MonoBehaviour:
   _nextBiomeGround: {fileID: 2100000, guid: 760bfac9b38e21449bfec055d69f104c, type: 2}
   _clouds: {fileID: 1667693624}
   _cloudsSpeedFactor: 0.3
+  _biomeData: {fileID: 11400000, guid: a78052ac87b82094084b92dad36f4392, type: 2}
 --- !u!4 &853999863
 Transform:
   m_ObjectHideFlags: 0

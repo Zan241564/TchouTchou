@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject _clouds;
     GameObject _cloudsDupe;
     [SerializeField] float _cloudsSpeedFactor;
+    [SerializeField] BiomeData _biomeData;
 
     // Start is called before the first frame update
     void Start()
@@ -51,49 +52,10 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         SceneryScrolling();
-        if (_trainStop)
+        UpdateTrainSpeed();
+        if (_swappingBiome)
         {
-            _trainVisualSpeed -= 1.0f * Time.deltaTime * _trainAccelerationFactor;
-            if(_trainVisualSpeed < 0.0f)
-            {
-                _trainVisualSpeed = 0.0f;
-            }
-        }
-        else
-        {
-            _trainVisualSpeed += 1.0f * Time.deltaTime * _trainAccelerationFactor;
-            if (_trainVisualSpeed > _trainVisualSpeedMemo)
-            {
-                _trainVisualSpeed = _trainVisualSpeedMemo;
-            }
-        }
-        if(_swappingBiome)
-        {
-            _biomeSwappingTimer -= 1.0f * Time.deltaTime;
-            if(_biomeSwappingTimer > 2.5f)
-            {
-                Color temp = _fadeToBlack.color;
-                temp.a += 1.0f * Time.deltaTime * _fadeToBlackSpeed;
-                _fadeToBlack.color = temp;
-            }
-            else if(_biomeSwappingTimer > 0.0f)
-            {
-                if (_currentBiomeID != _nextBiomeID)
-                {
-                    _biome.GetComponent<MeshRenderer>().material = _nextBiome;
-                    _biomeDupe.GetComponent<MeshRenderer>().material = _nextBiome;
-                    _ground.GetComponent<MeshRenderer>().material = _nextBiomeGround;
-                    _groundDupe.GetComponent<MeshRenderer>().material = _nextBiomeGround;
-                    _currentBiomeID = _nextBiomeID;
-                }
-                Color temp = _fadeToBlack.color;
-                temp.a -= 1.0f * Time.deltaTime * _fadeToBlackSpeed;
-                _fadeToBlack.color = temp;
-            }
-            else
-            {
-                _swappingBiome = false;
-            }
+            BiomeSwap();
         }
     }
 
@@ -131,6 +93,55 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void UpdateTrainSpeed()
+    {
+        if (_trainStop)
+        {
+            _trainVisualSpeed -= 1.0f * Time.deltaTime * _trainAccelerationFactor;
+            if (_trainVisualSpeed < 0.0f)
+            {
+                _trainVisualSpeed = 0.0f;
+            }
+        }
+        else
+        {
+            _trainVisualSpeed += 1.0f * Time.deltaTime * _trainAccelerationFactor;
+            if (_trainVisualSpeed > _trainVisualSpeedMemo)
+            {
+                _trainVisualSpeed = _trainVisualSpeedMemo;
+            }
+        }
+    }
+
+    private void BiomeSwap()
+    {
+        _biomeSwappingTimer -= 1.0f * Time.deltaTime;
+        if (_biomeSwappingTimer > 2.5f)
+        {
+            Color temp = _fadeToBlack.color;
+            temp.a += 1.0f * Time.deltaTime * _fadeToBlackSpeed;
+            _fadeToBlack.color = temp;
+        }
+        else if (_biomeSwappingTimer > 0.0f)
+        {
+            if (_currentBiomeID != _nextBiomeID)
+            {
+                _biome.GetComponent<MeshRenderer>().material = _nextBiome;
+                _biomeDupe.GetComponent<MeshRenderer>().material = _nextBiome;
+                _ground.GetComponent<MeshRenderer>().material = _nextBiomeGround;
+                _groundDupe.GetComponent<MeshRenderer>().material = _nextBiomeGround;
+                _currentBiomeID = _nextBiomeID;
+            }
+            Color temp = _fadeToBlack.color;
+            temp.a -= 1.0f * Time.deltaTime * _fadeToBlackSpeed;
+            _fadeToBlack.color = temp;
+        }
+        else
+        {
+            _swappingBiome = false;
+        }
+    }
+
     public void StartStop()
     {
         _trainStop = !_trainStop;
@@ -163,6 +174,7 @@ public class GameManager : MonoBehaviour
     // This is called when the player chooses the next biome to go. It calls all the "narrative part" of the gameplay loop
     public void StartTrain()
     {
-        // do things
+        _trainStop = false;
+        
     }
 }
