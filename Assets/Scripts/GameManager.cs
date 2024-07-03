@@ -51,8 +51,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SceneryScrolling();
         UpdateTrainSpeed();
+        SceneryScrolling();
         if (_swappingBiome)
         {
             BiomeSwap();
