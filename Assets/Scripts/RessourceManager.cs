@@ -23,16 +23,17 @@ public class RessourceManager : MonoBehaviour
     int _foodBiomeBonus;
     int _waterBiomeBonus;
     int _moraleBiomeBonus;
-    int _daysBiomeBonus;
+
+    GameManager _gameManager;
 
     int _currentBiomeID;
 
     //Cette matrice indique les bonus de rssource et malus de jour pour chaque action dans chaque biome. 
     //Chaque paire de valeurs correspond à la apire (bonus ressource, malus jours) d'une action.
     //Les actions sont listées dans l'ordre de biome et, dans chaque biome, dans l'ordre food, water, morale
-    int[,] _biomeBonusMatrix = {{1, 2}, {1, 2}, {1, 2}, //biome 0
-                                {1,2},{1,2},{1,2},      // biome 1
-                                {1,2},{1,2},{1,2},};    //biome 2
+    int[,] _biomeBonusMatrix = {{1, -1}, {1, -2}, {1,-3}, //biome 0
+                                {1,-2},{1,-2},{1,-2},      // biome 1
+                                {1,-2},{1,-2},{1,-2},};    //biome 2
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +42,7 @@ public class RessourceManager : MonoBehaviour
          _foodGauge = 70;
          _waterGauge = 70;
          _moraleGauge = 70;
-         _daysGauge = 70;
+         _daysGauge = 10;
 
         UpdateDisplay(_foodDisplay, _foodGauge);
         UpdateDisplay(_waterDisplay, _waterGauge);
@@ -49,6 +50,7 @@ public class RessourceManager : MonoBehaviour
         UpdateDisplay(_daysDisplay, _daysGauge);
 
         // Récupération info biome
+        _gameManager = this.GetComponent<GameManager>();
         UpdateBiome();
 
     }
@@ -60,7 +62,7 @@ public class RessourceManager : MonoBehaviour
     }
 
     void UpdateBiome(){
-        _currentBiomeID = this.GetComponent<GameManager>().GetBiomeID();
+        _currentBiomeID = _gameManager.GetBiomeID();
 
         _foodBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 0, 0];
         _waterBiomeBonus = _biomeBonusMatrix[_currentBiomeID * 3 + 1, 0];
@@ -69,33 +71,47 @@ public class RessourceManager : MonoBehaviour
 
     public void AddFood() {
         _foodGauge += _foodBiomeBonus;
-        UpdateDisplay(_foodDisplay, _foodGauge);
         if (_foodGauge < 0) { _foodGauge = 0; }
         if (_foodGauge == 0) { GameOver(); }
+
+        UpdateDisplay(_foodDisplay, _foodGauge);
+
+        AddDays(GetDayCostForAction(0));
     }
 
     public void AddWater()
     {
         _waterGauge += _waterBiomeBonus;
-        UpdateDisplay(_waterDisplay, _waterGauge);
         if (_waterGauge < 0) { _waterGauge = 0; }
         if (_waterGauge == 0) { GameOver(); }
+
+        UpdateDisplay(_waterDisplay, _waterGauge);
+
+        AddDays(GetDayCostForAction(1));
     }
 
     public void AddMorale()
     {
         _moraleGauge += _moraleBiomeBonus;
-        UpdateDisplay(_moraleDisplay, _moraleGauge);
         if (_moraleGauge < 0) { _moraleGauge = 0; }
         if (_moraleGauge == 0) { GameOver(); }
+        UpdateDisplay(_moraleDisplay, _moraleGauge);
+
+        AddDays(GetDayCostForAction(2));
     }
 
-    public void AddDays()
+    int  GetDayCostForAction(int _actionID)
+    {
+        return _biomeBonusMatrix[_currentBiomeID * 3 + _actionID, 1];
+    }
+
+    public void AddDays(int _daysBiomeBonus)
     {
         _daysGauge += _daysBiomeBonus;
-        UpdateDisplay(_daysDisplay, _daysGauge);
         if (_daysGauge < 0) { _daysGauge = 0; }
         if (_daysGauge == 0) { GameOver(); }
+
+        UpdateDisplay(_daysDisplay, _daysGauge);
     }
     void GameOver()
     {

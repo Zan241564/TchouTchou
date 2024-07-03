@@ -1035,11 +1035,11 @@ MonoBehaviour:
       - m_Target: {fileID: 853999864}
         m_TargetAssemblyTypeName: RessourceManager, Assembly-CSharp
         m_MethodName: AddDays
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2079,10 +2079,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 784479208}
-  - {fileID: 29491690}
   - {fileID: 1790569319}
+  - {fileID: 29491690}
   - {fileID: 175612972}
+  - {fileID: 784479208}
   m_Father: {fileID: 1239327440}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
