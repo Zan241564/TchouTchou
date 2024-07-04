@@ -28,8 +28,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] float _swappingBiomeExitingDuration;
     [SerializeField] float _swappingBiomeTransitionDuration;
     [SerializeField] float _swappingBiomeEnteringDuration;
-    [SerializeField] Material _nextBiome;
-    [SerializeField] Material _nextBiomeGround;
     int _nextBiomeID = 1;
     [SerializeField] GameObject _sky;
     [SerializeField] GameObject _clouds;
@@ -44,14 +42,14 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _currentBiomeData = _forestData;
-        _biomeDupe = Instantiate(_biome, new Vector3(-5.0f, 5.0f, 120.0f), Quaternion.identity);
+        _biomeDupe = Instantiate(_biome, new Vector3(-5.0f, 5.0f, 80.0f), Quaternion.identity);
         _biomeDupe.transform.Rotate(90.0f, 0.0f, -90.0f);
         _trainVisualSpeed = _trainVisualSpeedMemo;
         _currentBiomeID = 0;
-        Vector3 groundDupePos = _ground.gameObject.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+        Vector3 groundDupePos = _ground.gameObject.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         _groundDupe = Instantiate(_ground, groundDupePos, Quaternion.identity);
         _groundDupe.gameObject.transform.Rotate(90.0f, 0.0f, -90.0f);
-        Vector3 cloudsDupePos = _clouds.gameObject.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+        Vector3 cloudsDupePos = _clouds.gameObject.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         _cloudsDupe = Instantiate(_clouds, cloudsDupePos, Quaternion.identity);
         _cloudsDupe.gameObject.transform.Rotate(90.0f, 0.0f, -90.0f);
     }
@@ -77,27 +75,27 @@ public class GameManager : MonoBehaviour
         _cloudsDupe.transform.position += new Vector3(0.0f, 0.0f, -1.0f) * Time.deltaTime * _trainVisualSpeed * _cloudsSpeedFactor;
         if (_biome.transform.position.z < _testBiomeZScrollLimit)
         {
-            _biome.transform.position = _biomeDupe.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+            _biome.transform.position = _biomeDupe.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         }
         if (_biomeDupe.transform.position.z < _testBiomeZScrollLimit)
         {
-            _biomeDupe.transform.position = _biome.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+            _biomeDupe.transform.position = _biome.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         }
         if (_ground.transform.position.z < _testBiomeZScrollLimit)
         {
-            _ground.transform.position = _groundDupe.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+            _ground.transform.position = _groundDupe.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         }
         if (_groundDupe.transform.position.z < _testBiomeZScrollLimit)
         {
-            _groundDupe.transform.position = _ground.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+            _groundDupe.transform.position = _ground.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         }
         if (_clouds.transform.position.z < _testBiomeZScrollLimit)
         {
-            _clouds.transform.position = _cloudsDupe.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+            _clouds.transform.position = _cloudsDupe.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         }
         if (_cloudsDupe.transform.position.z < _testBiomeZScrollLimit)
         {
-            _cloudsDupe.transform.position = _clouds.transform.position + new Vector3(0.0f, 0.0f, 120.0f);
+            _cloudsDupe.transform.position = _clouds.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         }
     }
 
@@ -131,6 +129,7 @@ public class GameManager : MonoBehaviour
         else if (_biomeSwappingTimer > _swappingBiomeTransitionDuration*0.5f + _swappingBiomeEnteringDuration)
         {
             // stop exiting messages and do the fade to black
+            _fadeToBlack.gameObject.SetActive(true);
             Color temp = _fadeToBlack.color;
             temp.a += 1.0f * Time.deltaTime * _fadeToBlackSpeed;
             _fadeToBlack.color = temp;
@@ -143,9 +142,13 @@ public class GameManager : MonoBehaviour
                 Debug.Log(_currentBiomeData);
                 _sky.gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.sky;
                 _clouds.gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.clouds;
+                _clouds.gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.clouds1;
                 _cloudsDupe.gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.clouds;
+                _cloudsDupe.gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.clouds1;
                 _biome.GetComponent<MeshRenderer>().material.mainTexture =  _currentBiomeData.background;
+                _biome.gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.background1;
                 _biomeDupe.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.background;
+                _biomeDupe.gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.background1;
                 _ground.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.ground;
                 _groundDupe.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.ground;
                 _train.gameObject.GetComponent<MeshRenderer>().material.mainTexture = _currentBiomeData.train;
@@ -157,6 +160,7 @@ public class GameManager : MonoBehaviour
         }
         else if (_biomeSwappingTimer > 0.0f)
         {
+            _fadeToBlack.gameObject.SetActive(false);
             // do the entering messages stuff
         }
         else
@@ -216,6 +220,18 @@ public class GameManager : MonoBehaviour
             default:
                 _currentBiomeData = _forestData;
                 break;
+        }
+    }
+
+    public bool TrainActuallyStopped()
+    {
+        if(_trainVisualSpeed <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

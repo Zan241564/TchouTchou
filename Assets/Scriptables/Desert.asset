@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Desert
   m_EditorClassIdentifier: 
   train: {fileID: 2800000, guid: 16df6e323cb700b4c8434a479ab7c1c5, type: 3}
-  background: {fileID: 2800000, guid: 4ccc267a0a17801498f50c39b08a241b, type: 3}
+  background: {fileID: 2800000, guid: 1385e5b08cf7eff469f0fb59a5f44771, type: 3}
+  background1: {fileID: 2800000, guid: 6d9a52d4e9593664ca2b90352fc5e925, type: 3}
   ground: {fileID: 2800000, guid: cf8beac54eabae04a8386fe0083f9aa3, type: 3}
   sky: {fileID: 2800000, guid: b5bfcbe785635b14e87109d9b0cd6654, type: 3}
-  clouds: {fileID: 2800000, guid: a4e491eb017cc9f4b9a4958578e8bd38, type: 3}
+  clouds: {fileID: 2800000, guid: 349e57ad5369fc047ac183737ae2a907, type: 3}
+  clouds1: {fileID: 2800000, guid: 4934dc3b97c960d42bece3e8d51c5662, type: 3}
   ID: 1
   biomeName: desert
