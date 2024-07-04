@@ -9,6 +9,12 @@ using UnityEngine.UIElements;
 public class RessourceManager : MonoBehaviour
 {
     [SerializeField]
+    GameObject[] _endingScreens;
+
+    [SerializeField]
+    GameObject[] _permanentContentList;
+
+    [SerializeField]
     TMP_Text[] _ressourceDisplays;
 
     [SerializeField]
@@ -20,7 +26,10 @@ public class RessourceManager : MonoBehaviour
     [SerializeField]
     GameObject[] _boutonsProchainArret;
 
+
     int[] _ressourceGauges = new int[4];
+
+    bool _noResources = false;
 
     FakeGameManager _gameManager;
     bool _trainRunning;
@@ -63,6 +72,8 @@ public class RessourceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _endingScreens[3].SetActive(true);
+
         _gameManager = this.GetComponent<FakeGameManager>();
 
         // Début de partie
@@ -231,14 +242,53 @@ public class RessourceManager : MonoBehaviour
         }
     }
 
-    void GameOver()
+    /// <summary>
+    /// Méthode qui désactive tout le contenu de l'interface graphique en cas de victoire/défaite.
+    /// Prend les éléments graphiques du PermanentContentCanvas (à l'exception des écrans de début et de fin) et les 3 autres Canvas au sein d'une liste.
+    /// </summary>
+    void DisablePermanentContent()
     {
-        Debug.Log("Game Over");
+        foreach (var item in _permanentContentList)
+        {
+            item.SetActive(false);
+        }
     }
 
+    /// <summary>
+    /// Méthode qui affiche les écrans de fin "Losing1" et "Losing2" en cas de perte en les réactivant au sein du PermanentContentCanvas
+    /// Écran Losing1 : Perte à cause des ressources
+    /// Écran Losing1 : Perte à cause de la catastrophe
+    /// </summary>
+    void GameOver()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Debug.Log( _nomRessources[i] + "- Valeur :" + _ressourceGauges[i]);
+
+            if (_ressourceGauges[i] == 0) { _noResources = true;}
+            Debug.Log(_noResources);
+
+            if (_noResources)
+            {
+                _endingScreens[0].SetActive(true);
+                _endingScreens[1].SetActive(false);
+
+            } else {
+                _endingScreens[0].SetActive(false);
+                _endingScreens[1].SetActive(true);    
+            }
+            DisablePermanentContent();
+
+        }
+    }
+
+    /// <summary>
+    /// Méthode qui affiche l'écran de victoire en cas de survie à la catastrophe.
+    /// </summary>
     void GameWin()
     {
-        Debug.Log("Game Won");
+        _endingScreens[2].SetActive(true);
+        DisablePermanentContent();
     }
 
 }
