@@ -98,9 +98,9 @@ public class NarrationManager : MonoBehaviour
     public void NarrationEntreeBiome(int biomeID)
     {
         Debug.Log("entering biome");
-        //idBloc = "Entering" + " " + " " + _nomBiomes[biomeID] + " " + Random.Range(0, nombreMaxExitBloc);
+        idBloc = "Entering " + " normal " + _nomBiomes[biomeID] + " " + Random.Range(0, nombreMaxExitBloc);
         _bulleNarrateur.gameObject.SetActive(true);
-        idBloc = "1";
+        //idBloc = "1";
         _texteNarrateur.text = narrationBlocks[idBloc];
 
     }
@@ -109,8 +109,8 @@ public class NarrationManager : MonoBehaviour
     {
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("exiting biome");
-        //idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
-        idBloc = "2";
+        idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
+        //idBloc = "2";
         _bulleNarrateur.gameObject.SetActive(true);
         _texteNarrateur.text = narrationBlocks[idBloc];
 
@@ -120,8 +120,8 @@ public class NarrationManager : MonoBehaviour
     {
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("narration d'action");
-        //idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
-        idBloc = (actionRef+3).ToString();
+        idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
+        //idBloc = (actionRef+3).ToString();
         _bulleNarrateur.gameObject.SetActive(true);
         _texteNarrateur.text = narrationBlocks[idBloc];
     }
@@ -130,8 +130,8 @@ public class NarrationManager : MonoBehaviour
     {
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("narration d'action");
-        //idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
-        idBloc = "6";
+        idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
+        //idBloc = "6";
         _bulleNarrateur.gameObject.SetActive(true);
         _texteNarrateur.text = narrationBlocks[idBloc];
     }
