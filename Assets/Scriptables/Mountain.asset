@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Mountain
   m_EditorClassIdentifier: 
   train: {fileID: 2800000, guid: fdb8ed4da59833d4fb8629eada30cc2a, type: 3}
-  background: {fileID: 2800000, guid: 44e830dc267d6924bb7c100f3265e433, type: 3}
+  background: {fileID: 2800000, guid: d927679a928dad749aff9284f78957d5, type: 3}
+  background1: {fileID: 2800000, guid: 6b2cbcd5fa0432c48be21f1f904d71f5, type: 3}
   ground: {fileID: 2800000, guid: 478bc9275d3a5f44388e0fa3020e6d01, type: 3}
   sky: {fileID: 2800000, guid: 453c8bc26356bc648befab1091354b72, type: 3}
-  clouds: {fileID: 2800000, guid: a001534c8d850de40b9ba43f358ffa9d, type: 3}
-  ID: 0
-  biomeName: 
+  clouds: {fileID: 2800000, guid: 0a06ff7a76b30b749a90c5cf46b9a3a4, type: 3}
+  clouds1: {fileID: 2800000, guid: 53a93de53882d7d42b29be12812016da, type: 3}
+  ID: 2
+  biomeName: mountain

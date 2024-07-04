@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Forest
   m_EditorClassIdentifier: 
   train: {fileID: 2800000, guid: 95cea3f09fa183d44932e1a4d4f2235e, type: 3}
-  background: {fileID: 2800000, guid: ae21623284d7c2f4d8ce1d3d0a7123c5, type: 3}
+  background: {fileID: 2800000, guid: a292eda0a1796a447a1ab286abf77dc7, type: 3}
+  background1: {fileID: 2800000, guid: 9326321966ec7764c9d858a1a9880bdd, type: 3}
   ground: {fileID: 2800000, guid: f9e399d82472dae4d93c20b4c8aad7be, type: 3}
   sky: {fileID: 2800000, guid: 28f3469a19e3e534ebdd4b5d0d8c0886, type: 3}
-  clouds: {fileID: 2800000, guid: a661a400709cbf94c84d06ea562b7026, type: 3}
+  clouds: {fileID: 2800000, guid: e134979ecb4a287488e355f99bdfb478, type: 3}
+  clouds1: {fileID: 2800000, guid: c01873c3635433c4b9bf625b4f47f302, type: 3}
   ID: 0
   biomeName: forest
