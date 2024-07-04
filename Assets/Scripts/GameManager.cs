@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] BiomeData _mountainData;
     BiomeData _currentBiomeData;
     RessourceManager _ressourceManager;
+    NarrationManager _narrationManager;
     int _remainingDaysStart;
     int _remainingDaysPrevious;
     int _SkyTintStatus = 1; // 0 = improving, 1 = not changing, 2 = degrading
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _ressourceManager = this.GetComponent<RessourceManager>();
+        _narrationManager = this.GetComponent <NarrationManager>();
         _currentBiomeData = _forestData;
         _biomeDupe = Instantiate(_biome, new Vector3(-5.0f, 5.0f, 80.0f), Quaternion.identity);
         _biomeDupe.transform.Rotate(90.0f, 0.0f, -90.0f);
@@ -143,6 +145,7 @@ public class GameManager : MonoBehaviour
             Color temp = _fadeToBlack.color;
             temp.a += 1.0f * Time.deltaTime * _fadeToBlackSpeed;
             _fadeToBlack.color = temp;
+
         }
         else if (_biomeSwappingTimer > _swappingBiomeEnteringDuration)
         {
@@ -171,12 +174,12 @@ public class GameManager : MonoBehaviour
         else if (_biomeSwappingTimer > 0.0f)
         {
             _fadeToBlack.gameObject.SetActive(false);
+            StopTrain(); // rajouté par Louis parce qu'il ne comprenait pas quand le train devait s'arreter, peut etre une erreur
             // do the entering messages stuff
         }
         else
         {
             _swappingBiome = false;
-            StopTrain();
         }
     }
 

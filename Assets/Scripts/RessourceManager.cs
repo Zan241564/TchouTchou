@@ -41,7 +41,7 @@ public class RessourceManager : MonoBehaviour
     //Chaque paire de valeurs correspond à la paire (bonus ressource, malus jours) d'une action.
     //Les actions sont listées dans l'ordre de biome et, dans chaque biome, dans l'ordre food, water, morale
     int[,] _biomeBonusMatrix = {{30, -3}, {20, -2}, {10,-2}, //biome 0
-                                {0,0},{10,-3},{15,-2},      // biome 1
+                                {10,-2},{5,-3},{15,-2},      // biome 1
                                 {15,-4},{25,-3},{10,-1},};    //biome 2
 
     //Cette matrice indique, pour chaque biome, combien le joueur perd de chaque ressource en y entrant

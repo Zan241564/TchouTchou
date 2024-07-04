@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 public class NarrationManager : MonoBehaviour
 {
-    public string csvFilePath = "Assets/Texts/fakeText.csv";
+     string csvFilePath = "Assets/Texts/Textes Trains.csv";
     private Dictionary<string, string> narrationBlocks = new Dictionary<string, string>();
 
     [SerializeField]
@@ -29,17 +30,25 @@ public class NarrationManager : MonoBehaviour
     string previousGameState;
     [SerializeField]
     string gameState;
+
+    [SerializeField]
+    GameObject _blackScreen;
+
     string idBloc;
 
     [SerializeField]
     int nombreMaxExitBloc;
+    [SerializeField]
+    int nombreMaxEntryBloc;
+    [SerializeField]
+    int nombreMaxActionBloc;
 
-    string[] _nomBiomes = { "Forest", "Desert", "Moutains" };
+    string[] _nomBiomes = { "forest", "desert", "mountain" };
+    string[] _nomActions = { "getfood", "getwater", "getmorale","leave" };
 
     void Start()
     {
         LoadNarrationBlocks();
-        Debug.Log(GetNarrationByID("1"));
         _ressourceManager = this.GetComponent<RessourceManager>();
 
         _textePassager1 = _bullePassager1.GetComponentInChildren<TMP_Text>();
@@ -48,35 +57,39 @@ public class NarrationManager : MonoBehaviour
 
         _gameManager = this.gameObject.GetComponent<GameManager>();
     }
-
+    
     private void Update()
     {
         if (_gameManager.TrainActuallyStopped())
         {
             gameState = "gameplay";
         }
-        else if (_gameManager._trainStop)
-        {
-            gameState = "enteringBiome";
-        }
-        else
+        else if (_blackScreen.activeSelf)
+            {
+            gameState = "fade to black";
+            }
+        else if (previousGameState == "gameplay" || previousGameState == "exitingBiome")
         {
             gameState = "exitingBiome";
+        }
+        else if (previousGameState == "fade to black" || previousGameState == "enteringBiome")
+        {
+            gameState = "enteringBiome";
         }
         if (gameState != previousGameState)
         {  
             if (gameState == "enteringBiome")
             {
                 FinNarration();
-                NarrationEntreeBiome(_gameManager.GetBiomeID());
+                NarrationEntreeBiome();
             }
-            if (gameState == "gameplay") { 
+            if (gameState == "gameplay" || gameState == "fade to black") { 
                 FinNarration();
             }
         }
         previousGameState = gameState;
     }
-
+    
     void LoadNarrationBlocks()
     {
          narrationBlocks = File.ReadLines(csvFilePath).Select(line => line.Split(";")).ToDictionary(line => line[0], line => line[1]);
@@ -95,12 +108,12 @@ public class NarrationManager : MonoBehaviour
         }
     }
 
-    public void NarrationEntreeBiome(int biomeID)
+    public void NarrationEntreeBiome()
     {
+        int biomeID = _gameManager.GetBiomeID();
         Debug.Log("entering biome");
-        idBloc = "Entering " + " normal " + _nomBiomes[biomeID] + " " + Random.Range(0, nombreMaxExitBloc);
+        idBloc = "entering " + "normal " + _nomBiomes[biomeID] + " " + UnityEngine.Random.Range(1,1+ nombreMaxEntryBloc);
         _bulleNarrateur.gameObject.SetActive(true);
-        //idBloc = "1";
         _texteNarrateur.text = narrationBlocks[idBloc];
 
     }
@@ -109,8 +122,7 @@ public class NarrationManager : MonoBehaviour
     {
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("exiting biome");
-        idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
-        //idBloc = "2";
+        idBloc = "exiting " +_nomBiomes[biomeID]+" "+ UnityEngine.Random.Range(1,1+nombreMaxExitBloc);
         _bulleNarrateur.gameObject.SetActive(true);
         _texteNarrateur.text = narrationBlocks[idBloc];
 
@@ -120,20 +132,15 @@ public class NarrationManager : MonoBehaviour
     {
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("narration d'action");
-        idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
-        //idBloc = (actionRef+3).ToString();
-        _bulleNarrateur.gameObject.SetActive(true);
-        _texteNarrateur.text = narrationBlocks[idBloc];
-    }
 
-    public void NarrationDepart()
-    {
-        int biomeID = _gameManager.GetBiomeID();
-        Debug.Log("narration d'action");
-        idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
-        //idBloc = "6";
-        _bulleNarrateur.gameObject.SetActive(true);
-        _texteNarrateur.text = narrationBlocks[idBloc];
+        idBloc = "action " + _nomActions[actionRef] +" "+ _nomBiomes[biomeID]+" "+ UnityEngine.Random.Range(1,1+nombreMaxActionBloc);
+        try
+        {
+            _texteNarrateur.text = narrationBlocks[idBloc];
+
+            _bulleNarrateur.gameObject.SetActive(true);
+        }
+        catch (Exception e) { }
     }
 
     public void FinNarration()
