@@ -116,6 +116,25 @@ public class NarrationManager : MonoBehaviour
 
     }
 
+    public void NarrationAction(int actionRef)
+    {
+        int biomeID = _gameManager.GetBiomeID();
+        Debug.Log("narration d'action");
+        //idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
+        idBloc = (actionRef+3).ToString();
+        _bulleNarrateur.gameObject.SetActive(true);
+        _texteNarrateur.text = narrationBlocks[idBloc];
+    }
+
+    public void NarrationDepart()
+    {
+        int biomeID = _gameManager.GetBiomeID();
+        Debug.Log("narration d'action");
+        //idBloc = "Exiting" +" "+" "+_nomBiomes[biomeID]+" "+ Random.Range(0,nombreMaxExitBloc);
+        idBloc = "6";
+        _bulleNarrateur.gameObject.SetActive(true);
+        _texteNarrateur.text = narrationBlocks[idBloc];
+    }
 
     public void FinNarration()
     {
