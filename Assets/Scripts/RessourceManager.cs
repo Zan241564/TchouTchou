@@ -270,11 +270,13 @@ public class RessourceManager : MonoBehaviour
 
             if (_noResources)
             {
+                //FadeIn(_endingScreens[0]);
                 _endingScreens[0].SetActive(true);
                 _endingScreens[1].SetActive(false);
 
             } else {
                 _endingScreens[0].SetActive(false);
+                //FadeIn(_endingScreens[1]);
                 _endingScreens[1].SetActive(true);    
             }
             DisablePermanentContent();
@@ -288,7 +290,17 @@ public class RessourceManager : MonoBehaviour
     void GameWin()
     {
         _endingScreens[2].SetActive(true);
+        //FadeIn(_endingScreens[2]);
         DisablePermanentContent();
     }
+
+    /*void FadeIn(GameObject fadingObject, float duration = 1.0f)
+    {
+        for (float t = 0.0f; t < duration; t += Time.deltaTime)
+        {
+            fadingObject.GetComponent<Renderer>().material.color = Color.Lerp(fadingObject.GetComponent<Renderer>().material.color, new Color(1.0f, 1.0f, 1.0f, 1.0f), t / duration);
+        }
+        fadingObject.SetActive(true);
+    }*/
 
 }
