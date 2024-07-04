@@ -29,9 +29,8 @@ public class RessourceManager : MonoBehaviour
 
     int[] _ressourceGauges = new int[4];
 
+    GameManager _gameManager;
     bool _noResources = false;
-
-    FakeGameManager _gameManager;
     bool _trainRunning;
     int _boutonParcoursChoisi;
 
@@ -72,9 +71,8 @@ public class RessourceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _gameManager = this.GetComponent<GameManager>();
         _endingScreens[3].SetActive(true);
-
-        _gameManager = this.GetComponent<FakeGameManager>();
 
         // Début de partie
         _ressourceGauges[0] = 70;
@@ -97,7 +95,9 @@ public class RessourceManager : MonoBehaviour
     private void Update()
     {
          if (_trainRunning){
-            if ( _gameManager._trainStop) { LeTrainArrive(); }
+            if ( _gameManager.TrainActuallyStopped()) {
+                Debug.Log("LeTrainArrive");
+                LeTrainArrive(); }
          }
     }
 
@@ -205,7 +205,7 @@ public class RessourceManager : MonoBehaviour
         _boutonParcoursChoisi = _boutonIndex;
         _trainRunning  = true;
         
-        StartCoroutine(_gameManager.SetNextBiomeID( _matriceCrspdcBoutonParcours[_boutonIndex, 0]));
+        _gameManager.StartTrain( _matriceCrspdcBoutonParcours[_boutonIndex, 0]);
         _canvasDestinations.SetActive(false);
     }
 
