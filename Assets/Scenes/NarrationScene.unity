@@ -242,7 +242,7 @@ PrefabInstance:
     - target: {fileID: 3114574458592088344, guid: 74855a23bbc5d3a408eb5afe243f9f86,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3608207802032103596, guid: 74855a23bbc5d3a408eb5afe243f9f86,
         type: 3}
@@ -1463,6 +1463,7 @@ MonoBehaviour:
   _bulleNarrateur: {fileID: 1240647889}
   previousGameState: 
   gameState: 
+  _blackScreen: {fileID: 699937114}
   nombreMaxExitBloc: 4
   nombreMaxEntryBloc: 5
   nombreMaxActionBloc: 3
