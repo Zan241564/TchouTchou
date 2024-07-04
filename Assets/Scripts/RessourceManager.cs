@@ -66,14 +66,15 @@ public class RessourceManager : MonoBehaviour
         _gameManager = this.GetComponent<GameManager>();
 
         // Début de partie
-        _ressourceGauges[0] = 70;
-        _ressourceGauges[1] = 70;
-        _ressourceGauges[2] = 70;
+        _ressourceGauges[0] = 100;
+        _ressourceGauges[1] = 100;
+        _ressourceGauges[2] = 100;
         _ressourceGauges[3] = 10;
 
         for (int i = 0; i < 3; i++) {
             UpdateDisplay(_ressourceDisplays[i], _ressourceGauges[i]);
         }
+        UpdateDisplay(_ressourceDisplays[3], _ressourceGauges[3], true);
 
         _trainRunning = false;
         _niveauParcours = 0;
@@ -83,7 +84,7 @@ public class RessourceManager : MonoBehaviour
 
     }
 
-    private void Update()
+    private void Update()//Vérifie quand le trian s'est arreté pour changer l'UI
     {
          if (_trainRunning){
             if ( _gameManager.TrainActuallyStopped()) {
@@ -92,6 +93,7 @@ public class RessourceManager : MonoBehaviour
          }
     }
 
+    //Change lUI pour les ressources
     void UpdateDisplay(TMP_Text _display, int _valueGauge, bool time = false)
     {
         if (time) {
@@ -111,6 +113,7 @@ public class RessourceManager : MonoBehaviour
      void AddRessource(int _ressourceType, int _ressourceValue) {
         _ressourceGauges[_ressourceType] += _ressourceValue;
         if (_ressourceGauges[_ressourceType] < 0) { _ressourceGauges[_ressourceType] = 0; }
+        if (_ressourceGauges[_ressourceType] > 100) { _ressourceGauges[_ressourceType] = 100; }
         if (_ressourceGauges[_ressourceType] == 0) { GameOver(); }
 
         if (_ressourceType != 3)
@@ -180,6 +183,7 @@ public class RessourceManager : MonoBehaviour
             else
             {
                 _boutonsActions[_nbBoutons].gameObject.SetActive(false);
+                _nbBoutons++;
             }
 
         }
