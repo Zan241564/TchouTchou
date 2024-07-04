@@ -1192,6 +1192,7 @@ MonoBehaviour:
   _forestData: {fileID: 11400000, guid: a78052ac87b82094084b92dad36f4392, type: 2}
   _desertData: {fileID: 11400000, guid: 38b74b2a3dda20340969eead7bc8d679, type: 2}
   _mountainData: {fileID: 11400000, guid: a49ed7a65282cd1449442f14ff0f1562, type: 2}
+  _skyTintChangeSpeed: 0.25
 --- !u!4 &853999863
 Transform:
   m_ObjectHideFlags: 0

@@ -87,7 +87,6 @@ public class RessourceManager : MonoBehaviour
     {
          if (_trainRunning){
             if ( _gameManager.TrainActuallyStopped()) {
-                Debug.Log("LeTrainArrive");
                 LeTrainArrive(); }
          }
     }
@@ -241,6 +240,11 @@ public class RessourceManager : MonoBehaviour
     void GameWin()
     {
         Debug.Log("Game Won");
+    }
+
+    public int getRemainingDays()
+    {
+        return _ressourceGauges[3];
     }
 
 }

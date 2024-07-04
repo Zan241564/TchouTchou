@@ -37,10 +37,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] BiomeData _desertData;
     [SerializeField] BiomeData _mountainData;
     BiomeData _currentBiomeData;
+    RessourceManager _ressourceManager;
+    int _remainingDaysStart;
+    int _remainingDaysPrevious;
+    int _SkyTintStatus = 1; // 0 = improving, 1 = not changing, 2 = degrading
+    [SerializeField] float _skyTintChangeSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
+        _ressourceManager = this.GetComponent<RessourceManager>();
         _currentBiomeData = _forestData;
         _biomeDupe = Instantiate(_biome, new Vector3(-5.0f, 5.0f, 80.0f), Quaternion.identity);
         _biomeDupe.transform.Rotate(90.0f, 0.0f, -90.0f);
@@ -52,6 +58,8 @@ public class GameManager : MonoBehaviour
         Vector3 cloudsDupePos = _clouds.gameObject.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
         _cloudsDupe = Instantiate(_clouds, cloudsDupePos, Quaternion.identity);
         _cloudsDupe.gameObject.transform.Rotate(90.0f, 0.0f, -90.0f);
+        _remainingDaysStart = _ressourceManager.getRemainingDays();
+        _remainingDaysPrevious = _remainingDaysStart;
     }
 
     // Update is called once per frame
@@ -63,6 +71,8 @@ public class GameManager : MonoBehaviour
         {
             BiomeSwap();
         }
+        SkyTintUpdate();
+        _remainingDaysPrevious = _ressourceManager.getRemainingDays();
     }
 
     private void SceneryScrolling()
@@ -232,6 +242,53 @@ public class GameManager : MonoBehaviour
         else
         {
             return false;
+        }
+    }
+
+    private void SkyTintUpdate()
+    {
+        int remainingDaysCurrent = _ressourceManager.getRemainingDays();
+        float ratio = Mathf.Min(1.0f, (float)remainingDaysCurrent / _remainingDaysStart);
+        if (remainingDaysCurrent < _remainingDaysPrevious)
+        {
+            _SkyTintStatus = 2;
+        }
+        else if(remainingDaysCurrent > _remainingDaysPrevious)
+        {
+            _SkyTintStatus = 0;
+        }
+        Color skyTint = _sky.GetComponent<MeshRenderer>().material.color;
+        float newTint;
+        switch (_SkyTintStatus)
+        {
+            case 0:
+                newTint = Mathf.Min(1.0f, skyTint.g + 1.0f * Time.deltaTime * _skyTintChangeSpeed);
+                if(newTint < ratio)
+                {
+                    skyTint.g = Mathf.Min(1.0f, skyTint.g + 1.0f * Time.deltaTime * _skyTintChangeSpeed);
+                    skyTint.b = Mathf.Min(1.0f, skyTint.b + 1.0f * Time.deltaTime * _skyTintChangeSpeed);
+                    _sky.GetComponent<MeshRenderer>().material.color = skyTint;
+                }
+                else
+                {
+                    _SkyTintStatus = 1;
+                }
+                break;
+            case 2:
+                newTint = Mathf.Max(0.0f, skyTint.g - 1.0f * Time.deltaTime * _skyTintChangeSpeed);
+                if (newTint > ratio)
+                {
+                    skyTint.g = Mathf.Max(0.0f, skyTint.g - 1.0f * Time.deltaTime * _skyTintChangeSpeed);
+                    skyTint.b = Mathf.Max(0.0f, skyTint.b - 1.0f * Time.deltaTime * _skyTintChangeSpeed);
+                    _sky.GetComponent<MeshRenderer>().material.color = skyTint;
+                }
+                else
+                {
+                    _SkyTintStatus = 1;
+                }
+                break;
+            default:
+                break;
         }
     }
 }
