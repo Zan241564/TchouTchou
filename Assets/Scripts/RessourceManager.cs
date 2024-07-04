@@ -39,8 +39,8 @@ public class RessourceManager : MonoBehaviour
     //Cette matrice indique, pour chaque biome, combien le joueur perd de chaque ressource en y entrant
     // L'ordre des ressources est food, water, morale
     int[,] _biomeMalusMatrix = { { -25,-25,0},//biome 0
-                                {-25,-45,35 },//biome 1
-                                {45,25,20 }};//biome 2
+                                {-25,-45,-35 },//biome 1
+                                {-45,-25,-20 }};//biome 2
 
     //Cette matrice donne les informations pour le parcours du train. 
     // La première dimension indique le niveau
