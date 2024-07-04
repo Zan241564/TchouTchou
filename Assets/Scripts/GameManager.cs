@@ -129,6 +129,7 @@ public class GameManager : MonoBehaviour
         else if (_biomeSwappingTimer > _swappingBiomeTransitionDuration*0.5f + _swappingBiomeEnteringDuration)
         {
             // stop exiting messages and do the fade to black
+            _fadeToBlack.gameObject.SetActive(true);
             Color temp = _fadeToBlack.color;
             temp.a += 1.0f * Time.deltaTime * _fadeToBlackSpeed;
             _fadeToBlack.color = temp;
@@ -159,6 +160,7 @@ public class GameManager : MonoBehaviour
         }
         else if (_biomeSwappingTimer > 0.0f)
         {
+            _fadeToBlack.gameObject.SetActive(false);
             // do the entering messages stuff
         }
         else
@@ -218,6 +220,18 @@ public class GameManager : MonoBehaviour
             default:
                 _currentBiomeData = _forestData;
                 break;
+        }
+    }
+
+    public bool TrainActuallyStopped()
+    {
+        if(_trainVisualSpeed <= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
