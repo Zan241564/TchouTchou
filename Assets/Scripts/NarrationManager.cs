@@ -18,6 +18,8 @@ public class NarrationManager : MonoBehaviour
     GameObject _bullePassager2;
     [SerializeField]
     GameObject _bulleNarrateur;
+    [SerializeField]
+    TMP_Text _bulleBiome;
 
     TMP_Text _textePassager1;
     TMP_Text _textePassager2;
@@ -42,9 +44,16 @@ public class NarrationManager : MonoBehaviour
     int nombreMaxEntryBloc;
     [SerializeField]
     int nombreMaxActionBloc;
+    [SerializeField]
+    int nombreMaxEntryLowReessourceBloc;
 
-    string[] _nomBiomes = { "forest", "desert", "mountain" };
+    string[] _nomBiomes = { "Forest", "Desert", "Moutains" };
+    string[] _nomBiomesPourID = { "forest", "desert", "mountain" };
+
     string[] _nomActions = { "getfood", "getwater", "getmorale","leave" };
+
+    int[] _seuilsRessourcesFaibles = { 25, 25, 25 };
+    string[] _nomRessourcesFaibles = { "hunger", "thirst", "lowmorale", "normal"};
 
     void Start()
     {
@@ -56,6 +65,8 @@ public class NarrationManager : MonoBehaviour
         _texteNarrateur = _bulleNarrateur.GetComponentInChildren<TMP_Text>();
 
         _gameManager = this.gameObject.GetComponent<GameManager>();
+
+        UpdateBulleBiome();
     }
     
     private void Update()
@@ -86,6 +97,8 @@ public class NarrationManager : MonoBehaviour
             if (gameState == "gameplay" || gameState == "fade to black") { 
                 FinNarration();
             }
+
+            if (gameState == "fade to black") { _ressourceManager.ConsommationInterBiome(); }
         }
         previousGameState = gameState;
     }
@@ -116,17 +129,29 @@ public class NarrationManager : MonoBehaviour
     {
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("entering biome");
-        idBloc = "entering " + "normal " + _nomBiomes[biomeID] + " " + UnityEngine.Random.Range(1,1+ nombreMaxEntryBloc);
+        int typeEntree = _ressourceManager.QuelTypeEntree(_seuilsRessourcesFaibles);
+        if(typeEntree == -1)
+        {
+            idBloc = "entering " + "normal " + _nomBiomesPourID[biomeID] + " " + UnityEngine.Random.Range(1, 1 + nombreMaxEntryBloc);
+
+        }
+        else
+        {
+            string entryType = _nomRessourcesFaibles[typeEntree];
+            idBloc = "entering " + entryType + " " + UnityEngine.Random.Range(1, 1 + nombreMaxEntryLowReessourceBloc);
+
+        }
         _bulleNarrateur.gameObject.SetActive(true);
         _texteNarrateur.text = narrationBlocks[idBloc];
 
+        UpdateBulleBiome();
     }
 
     public void NarrationSortieBiome()
     {
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("exiting biome");
-        idBloc = "exiting " +_nomBiomes[biomeID]+" "+ UnityEngine.Random.Range(1,1+nombreMaxExitBloc);
+        idBloc = "exiting " +_nomBiomesPourID[biomeID]+" "+ UnityEngine.Random.Range(1,1+nombreMaxExitBloc);
         _bulleNarrateur.gameObject.SetActive(true);
         _texteNarrateur.text = narrationBlocks[idBloc];
 
@@ -138,7 +163,7 @@ public class NarrationManager : MonoBehaviour
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("narration d'action");
 
-        idBloc = "action " + _nomActions[actionRef] +" "+ _nomBiomes[biomeID]+" "+ UnityEngine.Random.Range(1,1+nombreMaxActionBloc);
+        idBloc = "action " + _nomActions[actionRef] +" "+ _nomBiomesPourID[biomeID]+" "+ UnityEngine.Random.Range(1,1+nombreMaxActionBloc);
         string str = GetNarrationByID(idBloc);
         if(str == null || str == "" || str == string.Empty)
         {
@@ -148,6 +173,11 @@ public class NarrationManager : MonoBehaviour
         _bulleNarrateur.gameObject.SetActive(true);
     }
 
+
+    public void UpdateBulleBiome()
+    {
+        _bulleBiome.text = _nomBiomes[_gameManager.GetBiomeID()];
+    }
     public void FinNarration()
     {
         Debug.Log("fin de narration");

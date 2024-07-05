@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Linq;
 
 public class RessourcesManager : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class RessourcesManager : MonoBehaviour
     bool _noResources = false;
     bool _trainRunning;
     int _boutonParcoursChoisi;
+    int _nextBiome;
 
     [SerializeField] SoundManager _soundManager;
 
@@ -167,7 +169,7 @@ public class RessourcesManager : MonoBehaviour
             string _nomProchainNoeud = _nomBiomes[i];
             if (_joursAProchainNoeud != 0) {
                 _boutonsProchainArret[_nbBoutons].gameObject.SetActive(true);
-                _boutonsProchainArret[_nbBoutons].GetComponentInChildren<TMP_Text>().text = _nomProchainNoeud + " " + _joursAProchainNoeud;
+                _boutonsProchainArret[_nbBoutons].GetComponentInChildren<TMP_Text>().text = _nomProchainNoeud + " (+" + _joursAProchainNoeud+ " days)";
 
                 _matriceCrspdcBoutonParcours[_nbBoutons, 0] = i;
                 _matriceCrspdcBoutonParcours[_nbBoutons, 1] = _joursAProchainNoeud;
@@ -188,7 +190,7 @@ public class RessourcesManager : MonoBehaviour
             if (_gainRessource != 0)
             {
                 _boutonsActions[_nbBoutons].gameObject.SetActive(true);
-                _boutonsActions[_nbBoutons].GetComponentInChildren<TMP_Text>().text = "Get " + _gainRessource + " "+  _nomRessources[i] + " in " + _perteJours + " days";
+                _boutonsActions[_nbBoutons].GetComponentInChildren<TMP_Text>().text = "Spend " + _perteJours + " days to gain " + _gainRessource + " " + _nomRessources[i];
 
 
                 _nbBoutons++;
@@ -212,8 +214,8 @@ public class RessourcesManager : MonoBehaviour
     {
         _boutonParcoursChoisi = _boutonIndex;
         _trainRunning  = true;
-        
-        _gameManager.StartTrain( _matriceCrspdcBoutonParcours[_boutonIndex, 0]);
+        _nextBiome = _matriceCrspdcBoutonParcours[_boutonIndex, 0];
+        _gameManager.StartTrain(_nextBiome);
         _canvasDestinations.SetActive(false);
     }
 
@@ -230,7 +232,7 @@ public class RessourcesManager : MonoBehaviour
         UpdateBoutonsActions();
         UpdateBoutonsProchainArret();
 
-        ConsommationInterBiome();
+        //ConsommationInterBiome();
 
         _niveauParcours++;
         if(_niveauParcours == 5)
@@ -242,11 +244,11 @@ public class RessourcesManager : MonoBehaviour
     /// <summary>
     /// Fonction pour l'effet sur ressourcs du changement de biome
     /// </summary>
-    void ConsommationInterBiome()
+    public void ConsommationInterBiome()
     {
         for(int i = 0; i< 3; i++)
         {
-            AddRessource(i, _biomeMalusMatrix[_currentBiomeID,i]);
+            AddRessource(i, _biomeMalusMatrix[_nextBiome, i]);
         }
     }
 
@@ -259,6 +261,22 @@ public class RessourcesManager : MonoBehaviour
         foreach (var item in _permanentContentList)
         {
             item.SetActive(false);
+        }
+    }
+
+    public int QuelTypeEntree(int[] seuilsRessourcesChangementNarrationEntree)
+    {
+        if (_ressourceGauges[0]> seuilsRessourcesChangementNarrationEntree[0] && 
+            _ressourceGauges[1] > seuilsRessourcesChangementNarrationEntree[1] &&
+            _ressourceGauges[2] > seuilsRessourcesChangementNarrationEntree[2])
+        {
+            return -1;
+        }
+        else
+        {
+            int[] subArray = _ressourceGauges.Take(3).ToArray();
+            int minIndex = Array.IndexOf(subArray, subArray.Min());
+            return minIndex;
         }
     }
 

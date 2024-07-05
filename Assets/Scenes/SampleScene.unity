@@ -2235,12 +2235,14 @@ MonoBehaviour:
   _bullePassager1: {fileID: 169713115}
   _bullePassager2: {fileID: 185034603}
   _bulleNarrateur: {fileID: 288820107}
+  _bulleBiome: {fileID: 1378940670}
   previousGameState: 
   gameState: 
   _blackScreen: {fileID: 699937114}
   nombreMaxExitBloc: 4
   nombreMaxEntryBloc: 5
   nombreMaxActionBloc: 3
+  nombreMaxEntryLowReessourceBloc: 3
 --- !u!1 &948906303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3459,6 +3461,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243523939}
   m_CullTransparentMesh: 1
+--- !u!114 &1378940670 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8075060630149266102, guid: 2b9048bb86f896c448041437f17c8219,
+    type: 3}
+  m_PrefabInstance: {fileID: 1852171559}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1386336633
 GameObject:
   m_ObjectHideFlags: 0
@@ -4322,7 +4336,7 @@ PrefabInstance:
     - target: {fileID: 3804316116612341590, guid: 2b9048bb86f896c448041437f17c8219,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6311981034074877874, guid: 2b9048bb86f896c448041437f17c8219,
         type: 3}
