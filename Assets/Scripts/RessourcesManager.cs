@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class RessourceManager : MonoBehaviour
+public class RessourcesManager : MonoBehaviour
 {
     [SerializeField]
     GameObject[] _endingScreens;

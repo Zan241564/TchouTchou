@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] BiomeData _desertData;
     [SerializeField] BiomeData _mountainData;
     BiomeData _currentBiomeData;
-    RessourceManager _ressourceManager;
+    RessourcesManager _ressourceManager;
     NarrationManager _narrationManager;
     int _remainingDaysStart;
     int _remainingDaysPrevious;
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _ressourceManager = this.GetComponent<RessourceManager>();
+        _ressourceManager = this.GetComponent<RessourcesManager>();
         _narrationManager = this.GetComponent <NarrationManager>();
         _currentBiomeData = _forestData;
         _biomeDupe = Instantiate(_biome, new Vector3(-5.0f, 5.0f, 79.995f), Quaternion.identity);

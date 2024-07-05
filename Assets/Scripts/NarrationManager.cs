@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class NarrationManager : MonoBehaviour
 {
-     string csvFilePath = "Assets/Texts/Textes Trains.csv";
+     string csvFilePath = "TextesTrains";
     private Dictionary<string, string> narrationBlocks = new Dictionary<string, string>();
 
     [SerializeField]
@@ -23,7 +23,7 @@ public class NarrationManager : MonoBehaviour
     TMP_Text _textePassager2;
     TMP_Text _texteNarrateur;
 
-    RessourceManager _ressourceManager;
+    RessourcesManager _ressourceManager;
 
     GameManager _gameManager;
     [SerializeField]
@@ -49,7 +49,7 @@ public class NarrationManager : MonoBehaviour
     void Start()
     {
         LoadNarrationBlocks();
-        _ressourceManager = this.GetComponent<RessourceManager>();
+        _ressourceManager = this.GetComponent<RessourcesManager>();
 
         _textePassager1 = _bullePassager1.GetComponentInChildren<TMP_Text>();
         _textePassager2 = _bullePassager2.GetComponentInChildren<TMP_Text>();
@@ -92,7 +92,11 @@ public class NarrationManager : MonoBehaviour
     
     void LoadNarrationBlocks()
     {
-         narrationBlocks = File.ReadLines(csvFilePath).Select(line => line.Split(";")).ToDictionary(line => line[0], line => line[1]);
+        //narrationBlocks = File.ReadLines(csvFilePath).Select(line => line.Split(";")).ToDictionary(line => line[0], line => line[1]);
+        string str = Resources.Load<TextAsset>(csvFilePath).text;
+        narrationBlocks = str.Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries)
+                                        .Select(line => line.Split(';'))
+                                        .ToDictionary(line => line[0], line => line[1]);
     }
 
     public string GetNarrationByID(string id)
@@ -130,17 +134,18 @@ public class NarrationManager : MonoBehaviour
 
     public void NarrationAction(int actionRef)
     {
+        FinNarration();
         int biomeID = _gameManager.GetBiomeID();
         Debug.Log("narration d'action");
 
         idBloc = "action " + _nomActions[actionRef] +" "+ _nomBiomes[biomeID]+" "+ UnityEngine.Random.Range(1,1+nombreMaxActionBloc);
-        try
+        string str = GetNarrationByID(idBloc);
+        if(str == null || str == "" || str == string.Empty)
         {
-            _texteNarrateur.text = narrationBlocks[idBloc];
-
-            _bulleNarrateur.gameObject.SetActive(true);
+            return;
         }
-        catch (Exception e) { }
+        _texteNarrateur.text = str;
+        _bulleNarrateur.gameObject.SetActive(true);
     }
 
     public void FinNarration()
