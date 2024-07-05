@@ -34,6 +34,8 @@ public class RessourceManager : MonoBehaviour
     bool _trainRunning;
     int _boutonParcoursChoisi;
 
+    [SerializeField] SoundManager _soundManager;
+
     string[] _nomBiomes = { "Forest", "Desert", "Moutains" };
     string[] _nomRessources = { "Food", "Water", "Morale" };
 
@@ -68,17 +70,20 @@ public class RessourceManager : MonoBehaviour
     int[,] _matriceCrspdcBoutonParcours = new int[3, 2];
 
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        _gameManager = this.GetComponent<GameManager>();
-        _endingScreens[3].SetActive(true);
-
         // Début de partie
         _ressourceGauges[0] = 70;
         _ressourceGauges[1] = 70;
         _ressourceGauges[2] = 70;
         _ressourceGauges[3] = 10;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        _gameManager = this.GetComponent<GameManager>();
+        _endingScreens[3].SetActive(true);
 
         for (int i = 0; i < 3; i++) {
             UpdateDisplay(_ressourceDisplays[i], _ressourceGauges[i]);
@@ -272,11 +277,13 @@ public class RessourceManager : MonoBehaviour
                 //FadeIn(_endingScreens[0]);
                 _endingScreens[0].SetActive(true);
                 _endingScreens[1].SetActive(false);
+                _soundManager.EndGame(1);
 
             } else {
                 _endingScreens[0].SetActive(false);
                 //FadeIn(_endingScreens[1]);
-                _endingScreens[1].SetActive(true);    
+                _endingScreens[1].SetActive(true);
+                _soundManager.EndGame(2);
             }
             DisablePermanentContent();
 
@@ -291,6 +298,7 @@ public class RessourceManager : MonoBehaviour
         _endingScreens[2].SetActive(true);
         //FadeIn(_endingScreens[2]);
         DisablePermanentContent();
+        _soundManager.EndGame(0);
     }
 
     public int getRemainingDays()

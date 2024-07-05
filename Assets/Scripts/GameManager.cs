@@ -42,13 +42,17 @@ public class GameManager : MonoBehaviour
     int _remainingDaysPrevious;
     int _SkyTintStatus = 1; // 0 = improving, 1 = not changing, 2 = degrading
     [SerializeField] float _skyTintChangeSpeed;
+    [SerializeField] AudioSource _ambiance;
+    bool _ambianceSwapped = true;
+    [SerializeField] SoundManager _soundManager;
+    bool _hasStoppedOnce = false;
 
     // Start is called before the first frame update
     void Start()
     {
         _ressourceManager = this.GetComponent<RessourceManager>();
         _currentBiomeData = _forestData;
-        _biomeDupe = Instantiate(_biome, new Vector3(-5.0f, 5.0f, 80.0f), Quaternion.identity);
+        _biomeDupe = Instantiate(_biome, new Vector3(-5.0f, 5.0f, 79.995f), Quaternion.identity);
         _biomeDupe.transform.Rotate(90.0f, 0.0f, -90.0f);
         _trainVisualSpeed = _trainVisualSpeedMemo;
         _currentBiomeID = 0;
@@ -60,6 +64,8 @@ public class GameManager : MonoBehaviour
         _cloudsDupe.gameObject.transform.Rotate(90.0f, 0.0f, -90.0f);
         _remainingDaysStart = _ressourceManager.getRemainingDays();
         _remainingDaysPrevious = _remainingDaysStart;
+        StartCoroutine(_ambiance.GetComponent<AmbianceSwapper>().FadeInAmbiance(0));
+        StartCoroutine(_soundManager.FadeInTrainRolling());
     }
 
     // Update is called once per frame
@@ -85,11 +91,11 @@ public class GameManager : MonoBehaviour
         _cloudsDupe.transform.position += new Vector3(0.0f, 0.0f, -1.0f) * Time.deltaTime * _trainVisualSpeed * _cloudsSpeedFactor;
         if (_biome.transform.position.z < _testBiomeZScrollLimit)
         {
-            _biome.transform.position = _biomeDupe.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
+            _biome.transform.position = _biomeDupe.transform.position + new Vector3(0.0f, 0.0f, 79.995f);
         }
         if (_biomeDupe.transform.position.z < _testBiomeZScrollLimit)
         {
-            _biomeDupe.transform.position = _biome.transform.position + new Vector3(0.0f, 0.0f, 80.0f);
+            _biomeDupe.transform.position = _biome.transform.position + new Vector3(0.0f, 0.0f, 79.995f);
         }
         if (_ground.transform.position.z < _testBiomeZScrollLimit)
         {
@@ -135,6 +141,7 @@ public class GameManager : MonoBehaviour
         if(_biomeSwappingTimer > _swappingBiomeTransitionDuration + _swappingBiomeEnteringDuration)
         {
             // do exiting messages things
+            _ambianceSwapped = false;
         }
         else if (_biomeSwappingTimer > _swappingBiomeTransitionDuration*0.5f + _swappingBiomeEnteringDuration)
         {
@@ -143,6 +150,11 @@ public class GameManager : MonoBehaviour
             Color temp = _fadeToBlack.color;
             temp.a += 1.0f * Time.deltaTime * _fadeToBlackSpeed;
             _fadeToBlack.color = temp;
+            if(!_ambianceSwapped)
+            {
+                StartCoroutine(_ambiance.GetComponent<AmbianceSwapper>().PlayAmbiance(_nextBiomeID));
+                _ambianceSwapped = true;
+            }
         }
         else if (_biomeSwappingTimer > _swappingBiomeEnteringDuration)
         {
@@ -206,6 +218,9 @@ public class GameManager : MonoBehaviour
     public void StopTrain()
     {
         _trainStop = true;
+        _soundManager.TrainStartStop(1);
+        StartCoroutine(_soundManager.FadeOutTrainRolling());
+        _hasStoppedOnce = true;
         // do things
     }
 
@@ -231,6 +246,11 @@ public class GameManager : MonoBehaviour
                 _currentBiomeData = _forestData;
                 break;
         }
+        if(_hasStoppedOnce)
+        {
+            _soundManager.TrainStartStop(0);
+            StartCoroutine(_soundManager.FadeInTrainRolling());
+        }
     }
 
     public bool TrainActuallyStopped()
@@ -251,11 +271,21 @@ public class GameManager : MonoBehaviour
         float ratio = Mathf.Min(1.0f, (float)remainingDaysCurrent / _remainingDaysStart);
         if (remainingDaysCurrent < _remainingDaysPrevious)
         {
+            //Debug.Log("-----------------------------------------------");
+            //Debug.Log("remainingDaysCurrent="+remainingDaysCurrent);
+            //Debug.Log("_remainingDaysStart="+_remainingDaysStart);
+            //Debug.Log("ratio="+ratio);
             _SkyTintStatus = 2;
+            //Debug.Log("_SkyTintStatus="+_SkyTintStatus);
         }
         else if(remainingDaysCurrent > _remainingDaysPrevious)
         {
+            //Debug.Log("-----------------------------------------------");
+            //Debug.Log("remainingDaysCurrent="+remainingDaysCurrent);
+            //Debug.Log("_remainingDaysStart="+_remainingDaysStart);
+            //Debug.Log("ratio="+ratio);
             _SkyTintStatus = 0;
+            //Debug.Log("_SkyTintStatus="+_SkyTintStatus);
         }
         Color skyTint = _sky.GetComponent<MeshRenderer>().material.color;
         float newTint;
@@ -263,7 +293,8 @@ public class GameManager : MonoBehaviour
         {
             case 0:
                 newTint = Mathf.Min(1.0f, skyTint.g + 1.0f * Time.deltaTime * _skyTintChangeSpeed);
-                if(newTint < ratio)
+                //Debug.Log("newTint="+newTint);
+                if (newTint < ratio)
                 {
                     skyTint.g = Mathf.Min(1.0f, skyTint.g + 1.0f * Time.deltaTime * _skyTintChangeSpeed);
                     skyTint.b = Mathf.Min(1.0f, skyTint.b + 1.0f * Time.deltaTime * _skyTintChangeSpeed);
@@ -272,10 +303,12 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     _SkyTintStatus = 1;
+                    //Debug.Log("_SkyTintStatus="+_SkyTintStatus);
                 }
                 break;
             case 2:
                 newTint = Mathf.Max(0.0f, skyTint.g - 1.0f * Time.deltaTime * _skyTintChangeSpeed);
+                //Debug.Log("newTint="+newTint);
                 if (newTint > ratio)
                 {
                     skyTint.g = Mathf.Max(0.0f, skyTint.g - 1.0f * Time.deltaTime * _skyTintChangeSpeed);
@@ -285,6 +318,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     _SkyTintStatus = 1;
+                    //Debug.Log("_SkyTintStatus="+_SkyTintStatus);
                 }
                 break;
             default:
