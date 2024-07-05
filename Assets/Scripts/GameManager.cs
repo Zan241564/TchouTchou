@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
-using UnityEditor.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -185,12 +184,12 @@ public class GameManager : MonoBehaviour
         else if (_biomeSwappingTimer > 0.0f)
         {
             _fadeToBlack.gameObject.SetActive(false);
-            StopTrain(); // rajouté par Louis parce qu'il ne comprenait pas quand le train devait s'arreter, peut etre une erreur
             // do the entering messages stuff
         }
         else
         {
             _swappingBiome = false;
+            StopTrain();
         }
     }
 
