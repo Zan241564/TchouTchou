@@ -43,14 +43,14 @@ public class RessourceManager : MonoBehaviour
     //Chaque paire de valeurs correspond à la paire (bonus ressource, malus jours) d'une action.
     //Les actions sont listées dans l'ordre de biome et, dans chaque biome, dans l'ordre food, water, morale
     int[,] _biomeBonusMatrix = {{30, -3}, {20, -2}, {10,-2}, //biome 0
-                                {0,0},{10,-3},{15,-2},      // biome 1
+                                {10,-2},{5,-3},{15,-2},      // biome 1
                                 {15,-4},{25,-3},{10,-1},};    //biome 2
 
     //Cette matrice indique, pour chaque biome, combien le joueur perd de chaque ressource en y entrant
     // L'ordre des ressources est food, water, morale
     int[,] _biomeMalusMatrix = { { -25,-25,0},//biome 0
-                                {-25,-45,35 },//biome 1
-                                {45,25,20 }};//biome 2
+                                {-25,-45,-35 },//biome 1
+                                {-45,-25,-20 }};//biome 2
 
     //Cette matrice donne les informations pour le parcours du train. 
     // La première dimension indique le niveau
@@ -73,9 +73,9 @@ public class RessourceManager : MonoBehaviour
     private void Awake()
     {
         // Début de partie
-        _ressourceGauges[0] = 70;
-        _ressourceGauges[1] = 70;
-        _ressourceGauges[2] = 70;
+        _ressourceGauges[0] = 100;
+        _ressourceGauges[1] = 100;
+        _ressourceGauges[2] = 100;
         _ressourceGauges[3] = 10;
     }
 
@@ -88,6 +88,7 @@ public class RessourceManager : MonoBehaviour
         for (int i = 0; i < 3; i++) {
             UpdateDisplay(_ressourceDisplays[i], _ressourceGauges[i]);
         }
+        UpdateDisplay(_ressourceDisplays[3], _ressourceGauges[3], true);
 
         _trainRunning = false;
         _niveauParcours = 0;
@@ -97,7 +98,7 @@ public class RessourceManager : MonoBehaviour
 
     }
 
-    private void Update()
+    private void Update()//Vérifie quand le trian s'est arreté pour changer l'UI
     {
          if (_trainRunning){
             if ( _gameManager.TrainActuallyStopped()) {
@@ -105,6 +106,7 @@ public class RessourceManager : MonoBehaviour
          }
     }
 
+    //Change lUI pour les ressources
     void UpdateDisplay(TMP_Text _display, int _valueGauge, bool time = false)
     {
         if (time) {
@@ -124,6 +126,7 @@ public class RessourceManager : MonoBehaviour
      void AddRessource(int _ressourceType, int _ressourceValue) {
         _ressourceGauges[_ressourceType] += _ressourceValue;
         if (_ressourceGauges[_ressourceType] < 0) { _ressourceGauges[_ressourceType] = 0; }
+        if (_ressourceGauges[_ressourceType] > 100) { _ressourceGauges[_ressourceType] = 100; }
         if (_ressourceGauges[_ressourceType] == 0) { GameOver(); }
 
         if (_ressourceType != 3)
@@ -193,6 +196,7 @@ public class RessourceManager : MonoBehaviour
             else
             {
                 _boutonsActions[_nbBoutons].gameObject.SetActive(false);
+                _nbBoutons++;
             }
 
         }
